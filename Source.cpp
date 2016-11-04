@@ -143,7 +143,7 @@ void testSorted() {
 }
 
 int main() {
-	freopen("ou.txt", "wt", stdout);
+	//freopen("ou.txt", "wt", stdout);
 	testVector(100500);
 	testVector(50);
 	testArray(100500);
