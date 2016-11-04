@@ -132,11 +132,11 @@ void testSorted() {
 			int tm1 = int(clock()*1000.0 / CLOCKS_PER_SEC);
 			sort(b.begin(), b.end());
 			int tm2 = int(clock()*1000.0 / CLOCKS_PER_SEC);
-			cout << "vector of " << cnt[C] << " arrays " << " of length " << lens[C] << " std::sort " << tm2 - tm1 << "ms\n";
+			cout << "vector of " << cnt[C] << " arrays " << " of length " << lens[L] << " std::sort " << tm2 - tm1 << "ms\n";
 			tm1 = int(clock()*1000.0 / CLOCKS_PER_SEC);
 			timSort(a.begin(), a.end());
 			tm2 = int(clock()*1000.0 / CLOCKS_PER_SEC);
-			cout << "vector of " << cnt[C] << " arrays " << " of length " << lens[C] << " timSort " << tm2 - tm1 << "ms\n";
+			cout << "vector of " << cnt[C] << " arrays " << " of length " << lens[L] << " timSort " << tm2 - tm1 << "ms\n";
 			assert(a == b);
 		}
 	}
