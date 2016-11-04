@@ -7,6 +7,8 @@
 #include <vector>
 #include <cmath>
 
+#include "comparasions.h"
+
 using std::vector;
 using std::cin;
 using std::endl;
