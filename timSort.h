@@ -7,6 +7,7 @@ enum MonotonyType {
 	decreasing,
 	nonDecreasing
 };
+
 template <class Iter, class Compare>
 void timSort(Iter begin, Iter end, Compare cmp, const ITimSortParams &params) {
     int n = end - begin;
