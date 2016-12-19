@@ -53,6 +53,14 @@ void useGallop(int &posm, iter &mid, int &len, iter &last, int &posl, Compare &c
     cntl = 0;
 }
 
+template <class iter>
+void updateCount(int &cntm, int &cntl, iter &fir, int &posm, int &posf, iter &mid){
+    cntm++;
+    cntl = 0;
+    iter_swap(fir + posf++, mid + posm++);
+
+}
+
 template <class iter, class Compare>
 void mergeBlocks(iter fir, iter mid, iter last, int len, Compare cmp, const ITimSortParams &params) {
     assert(mid != last);
@@ -73,13 +81,9 @@ void mergeBlocks(iter fir, iter mid, iter last, int len, Compare cmp, const ITim
             continue;
         }
         if (Less(mid + posm, last + posl, cmp)) {
-            cntm++;
-            cntl = 0;
-            iter_swap(fir + posf++, mid + posm++);
+            updateCount(cntm, cntl, fir, posm, posf, mid);
         } else {
-            cntl++;
-            cntm = 0;
-            iter_swap(fir + posf++, last + posl++);
+            updateCount(cntl, cntm, fir, posl, posf, last);
         }
     }
     while (posm < len) {
