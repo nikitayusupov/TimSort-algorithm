@@ -44,50 +44,50 @@ void Copy(Iter fir, Iter sec, Iter2 res) {
 }
 
 template <class iter, class Compare>
+void useGallop(int &posm, iter &mid, int &len, iter &last, int &posl, Compare &cmp, iter &fir, int &posf, int &cntm, int &cntl){
+    int next_posm = posm + gallop(mid + posm, mid + len - 1, last + posl, cmp);
+    swap_ranges(mid + posm, mid + next_posm + 1, fir + posf);
+    posf += next_posm - posm + 1;
+    posm = next_posm + 1;
+    cntm = 0;
+    cntl = 0;
+}
+
+template <class iter, class Compare>
 void mergeBlocks(iter fir, iter mid, iter last, int len, Compare cmp, const ITimSortParams &params) {
-	assert(mid != last);
-	assert(fir != last);
-	for (int i = 0; i < len; i++) {
-		iter_swap(fir + i, last + i);
-	}
-	int posf, posm, posl;
-	posf = posm = posl = 0;
-	int cntm, cntl;
-	cntm = cntl = 0;
-	while (posm < len && posl < len) {
-		if (cntm == params.GetGallop() && lessEqual(mid + posm, last + posl, cmp)) {
-			int next_posm = posm + gallop(mid + posm, mid + len - 1, last + posl, cmp);
-			swap_ranges(mid + posm, mid + next_posm + 1, fir + posf);
-			posf += next_posm - posm + 1;
-			posm = next_posm + 1;
-			cntm = 0;
-			cntl = 0;
-			continue;
-		} else if (cntl == params.GetGallop() && lessEqual(last + posl, mid + posm, cmp)) {
-			int next_posl = posl + gallop(last + posl, last + len - 1, mid + posm, cmp);
-			swap_ranges(last + posl, last + next_posl + 1, fir + posf);
-			posf += next_posl - posl + 1;
-			posl = next_posl + 1;
-			cntm = 0;
-			cntl = 0;
-			continue;
-		}
-		if (Less(mid + posm, last + posl, cmp)) {
-			cntm++;
-			cntl = 0;
-			iter_swap(fir + posf++, mid + posm++);
-		} else {
-			cntl++;
-			cntm = 0;
-			iter_swap(fir + posf++, last + posl++);
-		}
-	}
-	while (posm < len) {
-		iter_swap(fir + posf++, mid + posm++);
-	}
-	while (posl < len) {
-		iter_swap(fir + posf++, last + posl++);
-	}
+    assert(mid != last);
+    assert(fir != last);
+    for (int i = 0; i < len; i++) {
+        iter_swap(fir + i, last + i);
+    }
+    int posf, posm, posl;
+    posf = posm = posl = 0;
+    int cntm, cntl;
+    cntm = cntl = 0;
+    while (posm < len && posl < len) {
+        if (cntm == params.GetGallop() && lessEqual(mid + posm, last + posl, cmp)) {
+            useGallop(posm, mid, len, last, posl, cmp, fir, posf, cntm, cntl);
+            continue;
+        } else if (cntl == params.GetGallop() && lessEqual(last + posl, mid + posm, cmp)) {
+            useGallop(posl, last, len, last, posl, cmp, fir, posf, cntm, cntl);
+            continue;
+        }
+        if (Less(mid + posm, last + posl, cmp)) {
+            cntm++;
+            cntl = 0;
+            iter_swap(fir + posf++, mid + posm++);
+        } else {
+            cntl++;
+            cntm = 0;
+            iter_swap(fir + posf++, last + posl++);
+        }
+    }
+    while (posm < len) {
+        iter_swap(fir + posf++, mid + posm++);
+    }
+    while (posl < len) {
+        iter_swap(fir + posf++, last + posl++);
+    }
 }
 
 template <class Iter, class Iter2, class Compare>
