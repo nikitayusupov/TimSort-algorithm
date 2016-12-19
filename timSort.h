@@ -1,6 +1,7 @@
 #include "inplaceMerge.h"
 #include "merges.h"
 #include "checks.h"
+#include "updates.h"
 
 enum MonotonyType {
 	undefined,
